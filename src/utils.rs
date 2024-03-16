@@ -1,5 +1,6 @@
 use bevy::{
     math::Mat4,
+    render::color::Color,
     transform::components::{GlobalTransform, Transform},
 };
 
@@ -23,6 +24,7 @@ pub fn calculate_billboard_uniform(
     global_transform: &GlobalTransform,
     transform: &Transform,
     lock_axis: Option<&BillboardLockAxis>,
+    color: Color,
 ) -> BillboardUniform {
     let transform = if lock_axis.is_some() {
         global_transform.compute_matrix()
@@ -30,5 +32,5 @@ pub fn calculate_billboard_uniform(
         compute_matrix_without_rotation(global_transform, transform)
     };
 
-    BillboardUniform { transform }
+    BillboardUniform { transform, color }
 }

@@ -1,6 +1,5 @@
 use crate::text::RenderBillboard;
 use crate::BILLBOARD_SHADER_HANDLE;
-use bevy::asset::AssetId;
 use bevy::core_pipeline::core_3d::Transparent3d;
 use bevy::ecs::query::ROQueryItem;
 use bevy::ecs::system::lifetimeless::{Read, SRes};
@@ -33,10 +32,12 @@ use bevy::render::view::{
 };
 use bevy::sprite::SpriteAssetEvents;
 use bevy::utils;
+use bevy::{asset::AssetId, render::color::Color};
 
 #[derive(Clone, Copy, ShaderType, Component)]
 pub struct BillboardUniform {
     pub(crate) transform: Mat4,
+    pub(crate) color: Color,
 }
 
 #[derive(Clone, Copy, Component, Debug)]
@@ -290,7 +291,7 @@ impl FromWorld for BillboardPipeline {
             "billboard_layout",
             &[BindGroupLayoutEntry {
                 binding: 0,
-                visibility: ShaderStages::VERTEX,
+                visibility: ShaderStages::VERTEX | ShaderStages::FRAGMENT,
                 ty: BindingType::Buffer {
                     ty: BufferBindingType::Uniform,
                     has_dynamic_offset: true,

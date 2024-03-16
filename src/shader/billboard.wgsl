@@ -11,6 +11,7 @@ struct View {
 
 struct Billboard {
     model: mat4x4<f32>,
+    color: vec4<f32>,
 }
 
 @group(0) @binding(0)
@@ -75,7 +76,7 @@ struct Fragment {
 
 @fragment
 fn fragment(fragment: Fragment) -> @location(0) vec4<f32> {
-    let color = textureSample(billboard_texture, billboard_sampler, fragment.uv);
+    let color = textureSample(billboard_texture, billboard_sampler, fragment.uv) * billboard.color;
 #ifdef VERTEX_COLOR
     return color * fragment.color;
 #else

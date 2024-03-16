@@ -1,5 +1,8 @@
-use crate::pipeline::{RenderBillboardImage, RenderBillboardMesh};
 use crate::utils::calculate_billboard_uniform;
+use crate::{
+    pipeline::{RenderBillboardImage, RenderBillboardMesh},
+    BillboardColor,
+};
 use crate::{BillboardDepth, BillboardLockAxis};
 use bevy::prelude::*;
 use bevy::render::mesh::{Indices, PrimitiveTopology};
@@ -41,20 +44,22 @@ pub fn extract_billboard_text(
             &Transform,
             &BillboardTextHandles,
             &BillboardDepth,
+            &BillboardColor,
             Option<&BillboardLockAxis>,
         )>,
     >,
 ) {
     let mut batch = Vec::with_capacity(*previous_len);
 
-    for (entity, visibility, global_transform, transform, handles, &depth, lock_axis) in
+    for (entity, visibility, global_transform, transform, handles, &depth, color, lock_axis) in
         &billboard_text_query
     {
         if !visibility.get() {
             continue;
         }
 
-        let uniform = calculate_billboard_uniform(global_transform, transform, lock_axis);
+        let uniform =
+            calculate_billboard_uniform(global_transform, transform, lock_axis, color.color);
 
         for handle_group in handles.iter() {
             batch.push((

@@ -40,6 +40,11 @@ pub struct BillboardLockAxisBundle<T: Bundle> {
     pub lock_axis: BillboardLockAxis,
 }
 
+#[derive(Component, Default, Clone, Copy, Debug, Reflect)]
+pub struct BillboardColor {
+    pub color: Color,
+}
+
 #[derive(Bundle, Default)]
 pub struct BillboardTextureBundle {
     pub mesh: BillboardMeshHandle,
@@ -50,6 +55,7 @@ pub struct BillboardTextureBundle {
     pub inherited_visibility: InheritedVisibility,
     pub view_visibility: ViewVisibility,
     pub billboard_depth: BillboardDepth,
+    pub billboard_color: BillboardColor,
 }
 
 #[derive(Bundle, Default)]
@@ -64,6 +70,7 @@ pub struct BillboardTextBundle {
     pub view_visibility: ViewVisibility,
     pub billboard_depth: BillboardDepth,
     pub billboard_text_handles: BillboardTextHandles,
+    pub billboard_color: BillboardColor,
 }
 
 pub mod prelude {

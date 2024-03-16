@@ -11,7 +11,7 @@ use crate::{
     pipeline::{RenderBillboardImage, RenderBillboardMesh},
     text::RenderBillboard,
     utils::calculate_billboard_uniform,
-    BillboardDepth, BillboardLockAxis, BillboardMeshHandle, BillboardTextureHandle,
+    BillboardColor, BillboardDepth, BillboardLockAxis, BillboardMeshHandle, BillboardTextureHandle,
 };
 
 pub fn extract_billboard_texture(
@@ -26,6 +26,7 @@ pub fn extract_billboard_texture(
             &BillboardMeshHandle,
             &BillboardTextureHandle,
             &BillboardDepth,
+            &BillboardColor,
             Option<&BillboardLockAxis>,
         )>,
     >,
@@ -40,6 +41,7 @@ pub fn extract_billboard_texture(
         billboard_mesh,
         billboard_texture,
         &depth,
+        color,
         lock_axis,
     ) in &billboard_text_query
     {
@@ -47,7 +49,8 @@ pub fn extract_billboard_texture(
             continue;
         }
 
-        let uniform = calculate_billboard_uniform(global_transform, transform, lock_axis);
+        let uniform =
+            calculate_billboard_uniform(global_transform, transform, lock_axis, color.color);
 
         batch.push((
             entity,
